@@ -1,0 +1,23 @@
+.pcWrap {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.pc_spinner{
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: all 0.5s linear;
+}
+
+.fade-leaver-active {
+  transition: all 0.5s linear;
+  opacity: 0
+}
