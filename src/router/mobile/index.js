@@ -1,5 +1,5 @@
-const Mobile = () => import('@/components/mobile/Mobile')
-const Home = () => import('@/components/mobile/home/Home')
+const Mobile = () => import('@/views/mobile/Mobile')
+const Home = () => import('@/views/mobile/home/Home')
 export default [
   {
     path: '/mobile',

@@ -1,8 +1,8 @@
 <template>
-<div class="pcWrap">
+<div class="pc-wrap">
     PC
     <!--全局loading--->
-    <mt-spinner type="fading-circle" color="#00C80C" :size="50" v-show="isLoading" class="pc_spinner"></mt-spinner>
+    <mt-spinner type="fading-circle" color="#00C80C" :size="50" v-show="isLoading" class="pc-spinner"></mt-spinner>
     <!--全局loading -->
     <transition name="fade">
     <!--需要缓存的-->

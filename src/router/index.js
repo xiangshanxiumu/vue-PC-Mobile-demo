@@ -6,6 +6,7 @@ import pc from './pc'
 Vue.use(Router)
 
 let router = new Router({
+  mode: 'history',
   routes: [
     ...common,
     ...mobile,

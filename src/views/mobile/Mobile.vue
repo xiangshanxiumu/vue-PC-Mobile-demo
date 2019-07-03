@@ -1,8 +1,7 @@
 <template>
-  <div class="mobileWrap">
-    Mobile
+  <div class="mobile-wrap">
     <!--全局loading--->
-    <mt-spinner type="fading-circle" color="#00C80C" :size="50" v-show="isLoading" class="mobile_spinner"></mt-spinner>
+    <mt-spinner type="fading-circle" color="#00C80C" :size="50" v-show="isLoading" class="mobile-spinner"></mt-spinner>
     <!--全局loading -->
     <transition name="fade">
     <!--需要缓存的-->
@@ -34,7 +33,7 @@ export default {
   },
   mounted () {
     // 控制全局loading效果
-    this.$store.commit('showLoading')
+    // this.$store.commit('showLoading')
   }
 }
 </script>

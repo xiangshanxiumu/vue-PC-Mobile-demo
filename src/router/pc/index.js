@@ -1,5 +1,5 @@
-const PC = () => import('@/components/pc/PC')
-const Home = () => import('@/components/pc/home/Home')
+const PC = () => import('@/views/pc/PC')
+const Home = () => import('@/views/pc/home/Home')
 export default [
   {
     path: '/pc',
