@@ -11,50 +11,45 @@
     <!--首页轮播-->
     <!--tab-->
     <mt-navbar v-model="selected">
-      <mt-tab-item id="前端">前端</mt-tab-item>
-      <mt-tab-item id="后端">后端</mt-tab-item>
-      <mt-tab-item id="数据库">数据库</mt-tab-item>
-      <mt-tab-item id="大数据分析">大数据分析</mt-tab-item>
-      <mt-tab-item id="人工智能">人工智能</mt-tab-item>
+      <mt-tab-item v-for="item in tabs" :id="item.id" :key="item.id">{{item.name}}</mt-tab-item>
     </mt-navbar>
     <!--tab-->
     <div>
       <mt-cell
-        title="最新发布"
-        :value="selected"
+        :title="curSelected+'-hots'"
+        is-link
+        value="更多"
         class="page-part"
-        :style="{'margin-top':'3px','margin-bottom':'1rem','border-top':'none'}"
+        :style="{'margin-top':'3px','margin-bottom':'0px','border-top':'none'}"
       ></mt-cell>
     </div>
     <!-- tab-container -->
-    <mt-tab-container v-model="selected" class="home-tablist">
-      <mt-tab-container-item id="前端" class="home-tablist-item">
-        <!--下拉刷新加载-->
-        <!-- <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" @top-status-change="handleTopChange">
-          <ul>
-            <li v-for="item in list" style="height:5rem;'text-algin':center;">{{ item }}</li>
-          </ul>
-          <div slot="top" class="mint-loadmore-top">
-            <span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
-            <span v-show="topStatus === 'loading'">加载中...</span>
-          </div>
-        </mt-loadmore> -->
-        <!--下拉刷新加载-->
+    <!-- <mt-tab-container v-model="selected" class="home-tablist">
+      <mt-tab-container-item v-for="item in lists" :id="item.id" :key="item.id" class="home-tablist-item">
+        <mt-loadmore
+          :top-method="loadTop"
+          :ref="'loadmore'"
+        >
+          <mt-cell v-for="n in item.num" :title="item.name + n" :key="n">{{n}}</mt-cell>
+        </mt-loadmore>
       </mt-tab-container-item>
-      <mt-tab-container-item id="后端">
-        back-end
-        <!-- <mt-cell v-for="n in 4" :title="'测试 ' + n"></mt-cell> -->
-      </mt-tab-container-item>
-      <mt-tab-container-item id="数据库">database</mt-tab-container-item>
-      <mt-tab-container-item id="大数据分析">bigdata</mt-tab-container-item>
-      <mt-tab-container-item id="人工智能">AI</mt-tab-container-item>
-    </mt-tab-container>
+    </mt-tab-container> -->
+    <!-- tab-container -->
+    <mt-swipe :auto="0" :defaultIndex="curSwipe" :showIndicators="false" @change="handleChange" :style="{height:'10rem'}">
+      <mt-swipe-item>1</mt-swipe-item>
+      <mt-swipe-item>2</mt-swipe-item>
+      <mt-swipe-item>3</mt-swipe-item>
+      <mt-swipe-item>4</mt-swipe-item>
+      <mt-swipe-item>5</mt-swipe-item>
+    </mt-swipe>
+    <TabSwipe/>
   </div>
 </template>
 <script>
 // 导入lodash工具函数库
 // import _ from 'lodash'
 import "@/assets/css/mobile/home/home.css";
+import TabSwipe from '@/components/mobile/TabSwipe'
 export default {
   name: "Home_m",
   data() {
@@ -81,30 +76,98 @@ export default {
           url: ""
         }
       ],
-      selected: "前端",
+      tabs: [
+        {
+          name: "前端",
+          id: "1"
+        },
+        {
+          name: "后端",
+          id: "2"
+        },
+        {
+          name: "数据库",
+          id: "3"
+        },
+        {
+          name: "大数据分析",
+          id: "4"
+        },
+        {
+          name: "人工智能",
+          id: "5"
+        }
+      ],
+      lists:[
+        {
+          id:"1",
+          name:"前端",
+          num:10,
+          total:30
+        },
+        {
+          id:"2",
+          name:"后端",
+          num:10,
+          total:20
+        },
+        {
+          id:"3",
+          name: "数据库",
+          num:6,
+          total:5
+        },
+        {
+          id:"4",
+          name: "大数据分析",
+          num:5,
+          total:5
+        },
+        {
+          id:"5",
+          name: "人工智能",
+          num:3,
+          total:5
+        }
+      ],
+      selected: "1",
       topStatus: "",
-      list: [1, 2, 3, 4, 5, 6,7,8,9,10]
+      allLoaded: true,
+      curSwipe:0,
     };
+  },
+  components:{
+    TabSwipe
+  },
+  computed: {
+    curSelected(){
+      let ITEM = this.tabs.find((item,index)=>{
+        return item.id === this.selected;
+      })
+      return ITEM.name;
+    },
+  },
+  watch:{
+    'selected':{
+      handler(val,oldval){
+        console.log(val,oldval)
+      },
+      immediate:true,
+    }
   },
   methods: {
     loadTop() {
-      // 加载更多数据
-      // this.$refs.loadmore.onTopLoaded();
-      console.log("loadTop")
+      setTimeout(() => {
+            // 下拉刷新加载提示关闭 恢复原位
+            this.$nextTick(() => {
+              this.$refs.loadmore[this.selected-1].onTopLoaded();
+            });
+      }, 1000);
     },
-    handleTopChange(status) {
-      console.log(status)
-      this.topStatus = status;
-      if(this.topStatus==="loading"){
-        setTimeout(()=>{
-          this.topStatus = ''
-        },2000)
-      }
-    },
-    loadBottom() {
-      // 加载更多数据
-      this.allLoaded = true; // 若数据已全部获取完毕
-      // this.$refs.loadmore.onBottomLoaded();
+    handleChange(index){
+      console.log(index)
+      this.selected = String(index+1)
+      console.log(this.selected)
     }
   }
 };

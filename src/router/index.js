@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 import Vue from 'vue'
 import Router from 'vue-router'
 import common from './common'
@@ -10,7 +11,7 @@ let router = new Router({
   routes: [
     ...common,
     ...mobile,
-    ...pc
+    ...pc,
   ]
 })
 /**
@@ -19,31 +20,48 @@ let router = new Router({
 const autoSwitchPcAndMobile = (to, from, next) => {
   let u = navigator.userAgent
   if (u.indexOf('Mobile') > -1) {
-    // console.log('Mobile')
-    if (/pc/.test(to.path)) {
+    // "/" 根路径情况
+    if (to.path === '/') {
       next({
-        // 替换 移动端 路由 统一 mobile/ 下面
-        path: to.path.replace(/pc/, 'mobile')
+        // 调整路径到 /mobile/home
+        path: `${to.path}mobile/home`
       })
+    } else {
+      if (/pc/.test(to.path)) {
+        next({
+          // 替换 移动端 路由 统一 mobile/ 下面
+          path: to.path.replace(/pc/, 'mobile')
+        })
+      }
     }
   } else {
-    // console.log('PC')
-    if (/mobile/i.test(to.path)) {
+    // "/" 根路径情况
+    if (to.path === '/') {
       next({
-        // 替换 移动端 路由 统一 pc/ 下面
-        path: to.path.replace(/mobile/, 'pc')
+        // 调整路径到 /pc/home
+        path: `${to.path}pc/home`
       })
+    } else {
+      if (/mobile/i.test(to.path)) {
+        next({
+          // 替换 移动端 路由 统一 pc/ 下面
+          path: to.path.replace(/mobile/, 'pc')
+        })
+      }
     }
   }
 }
+
 router.beforeEach((to, from, next) => {
+  // 每次路由 设备判断跳转
+  autoSwitchPcAndMobile(to, from, next)
+  // 路由无变化 但窗口变化触发自动切换
+  window.onresize = () => {
+    autoSwitchPcAndMobile(to, from, next)
+  }
   // 设置页面title
   if (to.meta.title) {
     document.title = to.meta.title
-  }
-  // 窗口变化触发自动切换
-  window.onresize = () => {
-    autoSwitchPcAndMobile(to, from, next)
   }
   next()
 })

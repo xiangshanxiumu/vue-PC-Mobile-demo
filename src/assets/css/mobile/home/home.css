@@ -20,6 +20,7 @@
 }
 .home-tablist-item{
     width:100%;
+    min-height:inherit;
     height:auto;
     padding:0rem 1rem;
 }

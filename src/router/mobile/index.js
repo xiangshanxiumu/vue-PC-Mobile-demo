@@ -1,5 +1,6 @@
 const Mobile = () => import('@/views/mobile/Mobile')
 const Home = () => import('@/views/mobile/home/Home')
+const uploadTest = () => import('@/views/mobile/home/uploadTest')
 export default [
   {
     path: '/mobile',
@@ -18,6 +19,11 @@ export default [
           title: '首页',
           KeepAlive: false // 不缓存
         }
+      },
+      {
+        path:'/mobile/uploadtest',
+        name:'uploadTest',
+        component:uploadTest
       }
     ]
   }

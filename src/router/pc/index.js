@@ -3,6 +3,7 @@ const Home = () => import('@/views/pc/home/Home')
 export default [
   {
     path: '/pc',
+    redirect: '/pc/home',
     name: 'PC',
     component: PC,
     meta: {
